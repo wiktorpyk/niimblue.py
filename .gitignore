@@ -1,0 +1,5 @@
+docs/_build/
+*/__pycache__/
+.venv/
+build/
+niimblue.py.egg-info/
