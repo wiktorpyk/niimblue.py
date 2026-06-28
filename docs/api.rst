@@ -1,10 +1,6 @@
 API reference
 =============
 
-.. automodule:: niimblue
-   :members:
-   :undoc-members:
-
 Server launcher
 ---------------
 

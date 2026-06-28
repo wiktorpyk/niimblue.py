@@ -41,6 +41,11 @@ autodoc_default_options = {
 # Always document __init__ params in the class docstring
 autoclass_content = "both"
 
+# Prevent duplicate object warnings from autodoc
+suppress_warnings = [
+    "toc.not_included",
+]
+
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "requests": ("https://requests.readthedocs.io/en/latest/", None),
@@ -58,3 +63,8 @@ html_theme_options = {
     "navigation_depth": 4,
     "titles_only": False,
 }
+
+# Suppress warnings about duplicate object descriptions
+suppress_warnings = [
+    "toc.not_included",  # Examples in code blocks shouldn't trigger this
+]

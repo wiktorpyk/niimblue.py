@@ -1,5 +1,5 @@
 niimblue.py documentation
-=======================
+=========================
 
 **niimblue.py** is a Python client library for NiimBot label printers.
 It communicates with a locally running `niimblue-cli`_ REST server over HTTP,
@@ -13,6 +13,7 @@ supporting both Bluetooth Low Energy and USB serial transports.
 
    installation
    quickstart
+   examples
    api
 
 Indices and tables
