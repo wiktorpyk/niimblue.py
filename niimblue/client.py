@@ -152,7 +152,7 @@ class PrintJob:
     image_source: Union[Path, str, bytes, Any, None] = None  # Any covers PIL.Image.Image
 
     # --- layout ---
-    print_direction: PrintDirection = PrintDirection.LEFT
+    print_direction: PrintDirection = PrintDirection.TOP
     label_width: Optional[int] = None
     label_height: Optional[int] = None
     image_position: ImagePosition = ImagePosition.CENTRE
@@ -160,12 +160,12 @@ class PrintJob:
 
     # --- print quality ---
     quantity: int = 1
-    density: int = 3
-    threshold: int = 128
+    density: Optional[int] = None
+    threshold: Optional[int] = None
 
     # --- hardware hints ---
     print_task: Optional[str] = None
-    label_type: int = 1
+    label_type: Optional[int] = None
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -229,6 +229,11 @@ class PrintJob:
         """
         image_url, image_b64 = self._resolve_image()
 
+        image_field = (
+            {"imageUrl": image_url} if image_url is not None
+            else {"imageBase64": image_b64}
+        )
+
         payload: dict[str, Any] = {
             "printDirection": self.print_direction.value,
             "quantity": self.quantity,
@@ -237,21 +242,13 @@ class PrintJob:
             "labelType": self.label_type,
             "imagePosition": self.image_position.value,
             "imageFit": self.image_fit.value,
+            "labelWidth": self.label_width,
+            "labelHeight": self.label_height,
+            "printTask": self.print_task,
+            **image_field,
         }
 
-        if image_url is not None:
-            payload["imageUrl"] = image_url
-        else:
-            payload["imageBase64"] = image_b64
-
-        if self.label_width is not None:
-            payload["labelWidth"] = self.label_width
-        if self.label_height is not None:
-            payload["labelHeight"] = self.label_height
-        if self.print_task is not None:
-            payload["printTask"] = self.print_task
-
-        return payload
+        return {k: v for k, v in payload.items() if v is not None}
 
 
 @dataclass
