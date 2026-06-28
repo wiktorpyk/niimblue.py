@@ -1,0 +1,886 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimblue.client &mdash; niimblue.py 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            niimblue.py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">niimblue.py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">niimblue.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimblue.client</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">niimblue.client</span>
+<span class="sd">================</span>
+
+<span class="sd">High-level Python client for NiimBot label printers via the</span>
+<span class="sd">`niimblue-cli &lt;https://github.com/MultiMote/niimblue&gt;`_ REST server.</span>
+
+<span class="sd">Typical usage::</span>
+
+<span class="sd">    from niimblue import Printer, PrintJob, Transport, start_server</span>
+
+<span class="sd">    proc = start_server(port=5000)          # launch niimblue-cli server</span>
+<span class="sd">    with Printer(&quot;http://localhost:5000&quot;) as p:</span>
+<span class="sd">        p.connect(Transport.SERIAL, &quot;COM8&quot;)</span>
+<span class="sd">        p.print(PrintJob(image_source=&quot;label.png&quot;))</span>
+<span class="sd">    proc.terminate()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Optional PIL dependency</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">_PILImage</span>  <span class="c1"># pip install pillow</span>
+
+    <span class="n">_PIL_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="n">_PILImage</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="n">_PIL_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Enums</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="Transport">
+<a class="viewcode-back" href="../../api.html#niimblue.Transport">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Transport</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Communication transport to use when connecting to the printer.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        BLE: Bluetooth Low Energy.</span>
+<span class="sd">        SERIAL: USB serial / UART.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">BLE</span> <span class="o">=</span> <span class="s2">&quot;ble&quot;</span>
+    <span class="n">SERIAL</span> <span class="o">=</span> <span class="s2">&quot;serial&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="PrintDirection">
+<a class="viewcode-back" href="../../api.html#niimblue.PrintDirection">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrintDirection</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Orientation of the printed image on the label.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        LEFT: Feed direction is from the left (landscape).</span>
+<span class="sd">        TOP: Feed direction is from the top (portrait).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">LEFT</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span>
+    <span class="n">TOP</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ImagePosition">
+<a class="viewcode-back" href="../../api.html#niimblue.ImagePosition">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ImagePosition</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Anchor point for positioning the image within the label canvas.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        CENTRE: Centered (default).</span>
+<span class="sd">        TOP: Top-center.</span>
+<span class="sd">        RIGHT_TOP: Top-right corner.</span>
+<span class="sd">        RIGHT: Middle-right.</span>
+<span class="sd">        RIGHT_BOTTOM: Bottom-right corner.</span>
+<span class="sd">        BOTTOM: Bottom-center.</span>
+<span class="sd">        LEFT_BOTTOM: Bottom-left corner.</span>
+<span class="sd">        LEFT: Middle-left.</span>
+<span class="sd">        LEFT_TOP: Top-left corner.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CENTRE</span> <span class="o">=</span> <span class="s2">&quot;centre&quot;</span>
+    <span class="n">TOP</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span>
+    <span class="n">RIGHT_TOP</span> <span class="o">=</span> <span class="s2">&quot;right top&quot;</span>
+    <span class="n">RIGHT</span> <span class="o">=</span> <span class="s2">&quot;right&quot;</span>
+    <span class="n">RIGHT_BOTTOM</span> <span class="o">=</span> <span class="s2">&quot;right bottom&quot;</span>
+    <span class="n">BOTTOM</span> <span class="o">=</span> <span class="s2">&quot;bottom&quot;</span>
+    <span class="n">LEFT_BOTTOM</span> <span class="o">=</span> <span class="s2">&quot;left bottom&quot;</span>
+    <span class="n">LEFT</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span>
+    <span class="n">LEFT_TOP</span> <span class="o">=</span> <span class="s2">&quot;left top&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ImageFit">
+<a class="viewcode-back" href="../../api.html#niimblue.ImageFit">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ImageFit</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strategy used to fit the image into the label dimensions.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        CONTAIN: Scale to fit, preserving aspect ratio (default).</span>
+<span class="sd">        COVER: Scale to fill, cropping if necessary.</span>
+<span class="sd">        FILL: Stretch to exactly fill (ignores aspect ratio).</span>
+<span class="sd">        INSIDE: Like CONTAIN but never upscales.</span>
+<span class="sd">        OUTSIDE: Like COVER but never downscales.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONTAIN</span> <span class="o">=</span> <span class="s2">&quot;contain&quot;</span>
+    <span class="n">COVER</span> <span class="o">=</span> <span class="s2">&quot;cover&quot;</span>
+    <span class="n">FILL</span> <span class="o">=</span> <span class="s2">&quot;fill&quot;</span>
+    <span class="n">INSIDE</span> <span class="o">=</span> <span class="s2">&quot;inside&quot;</span>
+    <span class="n">OUTSIDE</span> <span class="o">=</span> <span class="s2">&quot;outside&quot;</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Data classes</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="PrintJob">
+<a class="viewcode-back" href="../../api.html#niimblue.PrintJob">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrintJob</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for a single print job.</span>
+
+<span class="sd">    The :attr:`image_source` field is flexible and accepts several types:</span>
+
+<span class="sd">    * ``str`` — local file path *or* remote URL.</span>
+<span class="sd">      If the path exists on disk it is read as a file; otherwise the string</span>
+<span class="sd">      is sent to the server as a URL.</span>
+<span class="sd">    * ``pathlib.Path`` — local image file (PNG, JPEG, BMP, …).</span>
+<span class="sd">    * ``bytes`` — raw image bytes.</span>
+<span class="sd">    * ``PIL.Image.Image`` — an already-opened Pillow image object</span>
+<span class="sd">      (requires the ``pillow`` extra).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_source: Image to print. See above for accepted types.</span>
+<span class="sd">        print_direction: Feed direction / orientation of the label.</span>
+<span class="sd">        label_width: Label width in pixels. Auto-detected when ``None``.</span>
+<span class="sd">        label_height: Label height in pixels. Auto-detected when ``None``.</span>
+<span class="sd">        image_position: Anchor point of the image within the label.</span>
+<span class="sd">        image_fit: Resizing strategy.</span>
+<span class="sd">        quantity: Number of copies to print.</span>
+<span class="sd">        density: Print density (darkness). Typical range 1–5.</span>
+<span class="sd">        threshold: Binarisation threshold for dithering (0–255, default 128).</span>
+<span class="sd">        print_task: Hardware print-task code (e.g. ``&quot;B1&quot;``).</span>
+<span class="sd">            Auto-detected by the server when ``None``.</span>
+<span class="sd">        label_type: Label type identifier sent to the firmware.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">image_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Any covers PIL.Image.Image</span>
+
+    <span class="c1"># --- layout ---</span>
+    <span class="n">print_direction</span><span class="p">:</span> <span class="n">PrintDirection</span> <span class="o">=</span> <span class="n">PrintDirection</span><span class="o">.</span><span class="n">LEFT</span>
+    <span class="n">label_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">label_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">image_position</span><span class="p">:</span> <span class="n">ImagePosition</span> <span class="o">=</span> <span class="n">ImagePosition</span><span class="o">.</span><span class="n">CENTRE</span>
+    <span class="n">image_fit</span><span class="p">:</span> <span class="n">ImageFit</span> <span class="o">=</span> <span class="n">ImageFit</span><span class="o">.</span><span class="n">CONTAIN</span>
+
+    <span class="c1"># --- print quality ---</span>
+    <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span>
+
+    <span class="c1"># --- hardware hints ---</span>
+    <span class="n">print_task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">label_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Internal helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return ``(image_url, image_base64)``; exactly one value is non-None.</span>
+
+<span class="sd">        A ``str`` source is first checked against the local filesystem.</span>
+<span class="sd">        If the path exists the file is read; otherwise the string is</span>
+<span class="sd">        forwarded to the server as a remote URL.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If :attr:`image_source` is ``None``.</span>
+<span class="sd">            TypeError: If :attr:`image_source` is of an unsupported type.</span>
+<span class="sd">            ImportError: If a ``PIL.Image.Image`` is supplied but Pillow is</span>
+<span class="sd">                not installed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_source</span>
+
+        <span class="k">if</span> <span class="n">src</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;image_source must be set before printing.&quot;</span><span class="p">)</span>
+
+        <span class="n">raw</span><span class="p">:</span> <span class="nb">bytes</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">raw</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="c1"># Not a local file — treat as remote URL</span>
+            <span class="k">return</span> <span class="n">src</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">_PIL_AVAILABLE</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">_PILImage</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+            <span class="n">src</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_PIL_AVAILABLE</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;Image&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">&quot;Pillow is not installed. Install it with:  pip install pillow&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unsupported image_source type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;Expected Path, str (file path or URL), bytes, or PIL.Image.Image.&quot;</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="PrintJob.to_payload">
+<a class="viewcode-back" href="../../api.html#niimblue.PrintJob.to_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialise the job to the JSON payload expected by the REST server.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary ready to be JSON-encoded and POSTed to ``/print``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">image_url</span><span class="p">,</span> <span class="n">image_b64</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_image</span><span class="p">()</span>
+
+        <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;printDirection&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_direction</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">,</span>
+            <span class="s2">&quot;threshold&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span>
+            <span class="s2">&quot;labelType&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_type</span><span class="p">,</span>
+            <span class="s2">&quot;imagePosition&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_position</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;imageFit&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_fit</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">image_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;imageUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_url</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;imageBase64&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_b64</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;labelWidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_width</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;labelHeight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_height</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;printTask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_task</span>
+
+        <span class="k">return</span> <span class="n">payload</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Device">
+<a class="viewcode-back" href="../../api.html#niimblue.Device">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Device</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A printer device discovered during a scan.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name: Human-readable device name.</span>
+<span class="sd">        address: BLE MAC address or serial port path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">address</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="PrinterInfo">
+<a class="viewcode-back" href="../../api.html#niimblue.PrinterInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrinterInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Structured printer information returned by :meth:`Printer.info`.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        connect_result: Raw connection-result code from firmware.</span>
+<span class="sd">        protocol_version: Firmware protocol version number.</span>
+<span class="sd">        model_id: Numeric model identifier.</span>
+<span class="sd">        serial: Device serial number string.</span>
+<span class="sd">        mac: Bluetooth MAC address.</span>
+<span class="sd">        charge: Battery charge percentage (0–100).</span>
+<span class="sd">        auto_shutdown_time: Idle-shutdown timeout in seconds.</span>
+<span class="sd">        label_type: Currently loaded label type code.</span>
+<span class="sd">        hardware_version: Hardware revision string.</span>
+<span class="sd">        software_version: Firmware version string.</span>
+<span class="sd">        model: Human-readable model name (from server metadata).</span>
+<span class="sd">        dpi: Print resolution in dots per inch.</span>
+<span class="sd">        print_direction: Default print direction for this model.</span>
+<span class="sd">        printhead_pixels: Number of pixels across the printhead.</span>
+<span class="sd">        paper_types: List of supported paper/label type codes.</span>
+<span class="sd">        density_min: Minimum valid density value.</span>
+<span class="sd">        density_max: Maximum valid density value.</span>
+<span class="sd">        density_default: Factory-default density value.</span>
+<span class="sd">        detected_print_task: Print-task code auto-detected by the server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">connect_result</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">protocol_version</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">model_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">serial</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">mac</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">auto_shutdown_time</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">label_type</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">hardware_version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">software_version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dpi</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">print_direction</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">printhead_pixels</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">paper_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">density_min</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">density_max</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">density_default</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">detected_print_task</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="PrinterInfo.from_response">
+<a class="viewcode-back" href="../../api.html#niimblue.PrinterInfo.from_response">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_response</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PrinterInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a :class:`PrinterInfo` from the raw ``/info`` response dict.&quot;&quot;&quot;</span>
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;printerInfo&quot;</span><span class="p">]</span>
+        <span class="n">mm</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;modelMetadata&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">connect_result</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;connectResult&quot;</span><span class="p">],</span>
+            <span class="n">protocol_version</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;protocolVersion&quot;</span><span class="p">],</span>
+            <span class="n">model_id</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;modelId&quot;</span><span class="p">],</span>
+            <span class="n">serial</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;serial&quot;</span><span class="p">],</span>
+            <span class="n">mac</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;mac&quot;</span><span class="p">],</span>
+            <span class="n">charge</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;charge&quot;</span><span class="p">],</span>
+            <span class="n">auto_shutdown_time</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;autoShutdownTime&quot;</span><span class="p">],</span>
+            <span class="n">label_type</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;labelType&quot;</span><span class="p">],</span>
+            <span class="n">hardware_version</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;hardwareVersion&quot;</span><span class="p">],</span>
+            <span class="n">software_version</span><span class="o">=</span><span class="n">pi</span><span class="p">[</span><span class="s2">&quot;softwareVersion&quot;</span><span class="p">],</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+            <span class="n">dpi</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;dpi&quot;</span><span class="p">],</span>
+            <span class="n">print_direction</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;printDirection&quot;</span><span class="p">],</span>
+            <span class="n">printhead_pixels</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;printheadPixels&quot;</span><span class="p">],</span>
+            <span class="n">paper_types</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;paperTypes&quot;</span><span class="p">],</span>
+            <span class="n">density_min</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;densityMin&quot;</span><span class="p">],</span>
+            <span class="n">density_max</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;densityMax&quot;</span><span class="p">],</span>
+            <span class="n">density_default</span><span class="o">=</span><span class="n">mm</span><span class="p">[</span><span class="s2">&quot;densityDefault&quot;</span><span class="p">],</span>
+            <span class="n">detected_print_task</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;detectedPrintTask&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RfidTagInfo">
+<a class="viewcode-back" href="../../api.html#niimblue.RfidTagInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RfidTagInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RFID tag data for one consumable (paper roll or ribbon).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        tag_present: ``True`` if a tag was detected.</span>
+<span class="sd">        uuid: Tag UUID string.</span>
+<span class="sd">        bar_code: Barcode value encoded in the tag.</span>
+<span class="sd">        serial_number: Consumable serial number.</span>
+<span class="sd">        all_paper: Total label capacity of the roll.</span>
+<span class="sd">        used_paper: Number of labels already consumed.</span>
+<span class="sd">        consumables_type: Numeric consumable-type identifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tag_present</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">bar_code</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">serial_number</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">all_paper</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">used_paper</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">consumables_type</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remaining_paper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remaining label count (``all_paper - used_paper``).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_paper</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_paper</span>
+
+<div class="viewcode-block" id="RfidTagInfo.from_dict">
+<a class="viewcode-back" href="../../api.html#niimblue.RfidTagInfo.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">RfidTagInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct from the nested dict returned by ``/rfid``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">tag_present</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;tagPresent&quot;</span><span class="p">],</span>
+            <span class="n">uuid</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;uuid&quot;</span><span class="p">],</span>
+            <span class="n">bar_code</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;barCode&quot;</span><span class="p">],</span>
+            <span class="n">serial_number</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;serialNumber&quot;</span><span class="p">],</span>
+            <span class="n">all_paper</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;allPaper&quot;</span><span class="p">],</span>
+            <span class="n">used_paper</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;usedPaper&quot;</span><span class="p">],</span>
+            <span class="n">consumables_type</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;consumablesType&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RfidInfo">
+<a class="viewcode-back" href="../../api.html#niimblue.RfidInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RfidInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combined RFID information for all loaded consumables.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        paper: RFID data for the paper/label roll.</span>
+<span class="sd">        ribbon: RFID data for the ink ribbon, or ``None`` for label-only</span>
+<span class="sd">            printers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">paper</span><span class="p">:</span> <span class="n">RfidTagInfo</span>
+    <span class="n">ribbon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RfidTagInfo</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="RfidInfo.from_response">
+<a class="viewcode-back" href="../../api.html#niimblue.RfidInfo.from_response">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_response</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">RfidInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct from the raw ``/rfid`` response dict.&quot;&quot;&quot;</span>
+        <span class="n">ribbon_raw</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ribbonRfidInfo&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">paper</span><span class="o">=</span><span class="n">RfidTagInfo</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;paperRfidInfo&quot;</span><span class="p">]),</span>
+            <span class="n">ribbon</span><span class="o">=</span><span class="n">RfidTagInfo</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ribbon_raw</span><span class="p">)</span> <span class="k">if</span> <span class="n">ribbon_raw</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Exceptions</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="PrinterError">
+<a class="viewcode-back" href="../../api.html#niimblue.PrinterError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrinterError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception for all printer-client errors.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="PrinterConnectionError">
+<a class="viewcode-back" href="../../api.html#niimblue.PrinterConnectionError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrinterConnectionError</span><span class="p">(</span><span class="n">PrinterError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when the printer cannot be reached or a connection attempt fails.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="PrinterPrintError">
+<a class="viewcode-back" href="../../api.html#niimblue.PrinterPrintError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrinterPrintError</span><span class="p">(</span><span class="n">PrinterError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a print job is rejected or fails mid-print.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Server launcher</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="start_server">
+<a class="viewcode-back" href="../../api.html#niimblue.start_server">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">start_server</span><span class="p">(</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
+    <span class="n">extra_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">wait</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">popen_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">:</span>  <span class="c1"># type: ignore[type-arg]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Launch a ``niimblue-cli server`` subprocess.</span>
+
+<span class="sd">    The function starts the server in the background and returns the</span>
+<span class="sd">    :class:`subprocess.Popen` object so the caller can manage its lifetime.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        port: TCP port for the REST server to listen on (default ``5000``).</span>
+<span class="sd">        host: Host/interface to bind to (default ``&quot;127.0.0.1&quot;``).</span>
+<span class="sd">        extra_args: Additional command-line arguments forwarded verbatim to</span>
+<span class="sd">            ``niimblue-cli server``.</span>
+<span class="sd">        wait: Seconds to sleep after spawning the process to give the server</span>
+<span class="sd">            time to become ready (default ``1.0``). Pass ``0`` to skip.</span>
+<span class="sd">        **popen_kwargs: Keyword arguments forwarded to :class:`subprocess.Popen`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The running server process.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If ``niimblue-cli`` is not found on ``PATH``.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        proc = start_server(port=5000)</span>
+<span class="sd">        try:</span>
+<span class="sd">            with Printer(&quot;http://localhost:5000&quot;) as p:</span>
+<span class="sd">                p.connect(Transport.SERIAL, &quot;COM8&quot;)</span>
+<span class="sd">                p.print(PrintJob(image_source=&quot;label.png&quot;))</span>
+<span class="sd">        finally:</span>
+<span class="sd">            proc.terminate()</span>
+<span class="sd">            proc.wait()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;niimblue-cli&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;server&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">),</span>
+        <span class="s2">&quot;--host&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">extra_args</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">extra_args</span><span class="p">)</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">wait</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">proc</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Client</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="Printer">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Printer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;High-level client for the niimblue-cli REST server.</span>
+
+<span class="sd">    Wraps every REST endpoint in a typed Python method.  Can be used as a</span>
+<span class="sd">    context manager — :meth:`__exit__` disconnects automatically.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        base_url: URL of the running niimblue-cli server</span>
+<span class="sd">            (default: ``&quot;http://localhost:5000&quot;``).</span>
+<span class="sd">        timeout: Seconds to wait for each HTTP response (default: ``10``).</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        with Printer(&quot;http://localhost:5000&quot;) as p:</span>
+<span class="sd">            p.connect(Transport.BLE, &quot;AA:BB:CC:DD:EE:FF&quot;)</span>
+<span class="sd">            info = p.info()</span>
+<span class="sd">            print(info.model, info.charge)</span>
+<span class="sd">            p.print(PrintJob(image_source=Path(&quot;label.png&quot;)))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Printer.__init__">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">})</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Internal helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">payload</span> <span class="ow">or</span> <span class="p">{},</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Connection management</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Printer.connect">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.connect">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Transport</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to a printer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transport: :class:`Transport` enum value, or the raw strings</span>
+<span class="sd">                ``&quot;ble&quot;`` / ``&quot;serial&quot;``.</span>
+<span class="sd">            address: BLE MAC address (e.g. ``&quot;AA:BB:CC:DD:EE:FF&quot;``) or serial</span>
+<span class="sd">                port (e.g. ``&quot;COM8&quot;``, ``&quot;/dev/ttyUSB0&quot;``).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Server confirmation message.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            PrinterConnectionError: If the server returns a non-2xx status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">Transport</span><span class="p">):</span>
+            <span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="s2">&quot;/connect&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;transport&quot;</span><span class="p">:</span> <span class="n">transport</span><span class="p">,</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">address</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PrinterConnectionError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Failed to connect to </span><span class="si">{</span><span class="n">address</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
+
+
+<div class="viewcode-block" id="Printer.disconnect">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.disconnect">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disconnect from the currently connected printer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Server confirmation message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="s2">&quot;/disconnect&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Printer.is_connected">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.is_connected">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return ``True`` if the server currently has an active printer connection.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="s2">&quot;/connected&quot;</span><span class="p">)[</span><span class="s2">&quot;connected&quot;</span><span class="p">]</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Printer info</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Printer.info">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PrinterInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch and return structured printer information.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A populated :class:`PrinterInfo` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">PrinterInfo</span><span class="o">.</span><span class="n">from_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="s2">&quot;/info&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Printer.rfid">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.rfid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rfid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfidInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch and return RFID tag information for the loaded consumables.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A populated :class:`RfidInfo` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">RfidInfo</span><span class="o">.</span><span class="n">from_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="s2">&quot;/rfid&quot;</span><span class="p">))</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Scanning</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Printer.scan">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.scan">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Transport</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Device</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scan for nearby devices over the given transport.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transport: :class:`Transport` enum value, or ``&quot;ble&quot;`` /</span>
+<span class="sd">                ``&quot;serial&quot;``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of discovered :class:`Device` objects (may be empty).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">Transport</span><span class="p">):</span>
+            <span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="s2">&quot;/scan&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;transport&quot;</span><span class="p">:</span> <span class="n">transport</span><span class="p">})</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Device</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">address</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">]]</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Printing</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Printer.print">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.print">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">PrintJob</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a print job to the connected printer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            job: A fully configured :class:`PrintJob` instance.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Server confirmation message.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            PrinterPrintError: If the server rejects the job.</span>
+<span class="sd">            ValueError: If the job is missing an image source.</span>
+<span class="sd">            TypeError: If ``image_source`` is of an unsupported type.</span>
+<span class="sd">            ImportError: If a ``PIL.Image.Image`` is supplied but Pillow is</span>
+<span class="sd">                not installed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="s2">&quot;/print&quot;</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">to_payload</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PrinterPrintError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Print job failed: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Context manager support</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Printer.__enter__">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.__enter__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Printer</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="Printer.__exit__">
+<a class="viewcode-back" href="../../api.html#niimblue.Printer.__exit__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Printer(base_url=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">!r}</span><span class="s2">)&quot;</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Example / smoke-test</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">start_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Printer</span><span class="p">(</span><span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">printer</span><span class="p">:</span>
+            <span class="n">printer</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connected:&quot;</span><span class="p">,</span> <span class="n">printer</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info:&quot;</span><span class="p">,</span> <span class="n">printer</span><span class="o">.</span><span class="n">info</span><span class="p">(),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+            <span class="c1"># From a local file path (str)</span>
+            <span class="n">printer</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;label.png&quot;</span><span class="p">))</span>
+
+            <span class="c1"># From a Path object</span>
+            <span class="n">printer</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;label.png&quot;</span><span class="p">)))</span>
+
+            <span class="c1"># From a URL</span>
+            <span class="n">printer</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span>
+                <span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;https://i.imgur.com/TzzVlc4.png&quot;</span><span class="p">,</span>
+                <span class="n">label_width</span><span class="o">=</span><span class="mi">344</span><span class="p">,</span>
+                <span class="n">label_height</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                <span class="n">print_direction</span><span class="o">=</span><span class="n">PrintDirection</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span>
+                <span class="n">quantity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">))</span>
+
+            <span class="c1"># From raw bytes</span>
+            <span class="n">printer</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;label.png&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()))</span>
+
+            <span class="k">if</span> <span class="n">_PIL_AVAILABLE</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">_PILImage</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+                <span class="n">printer</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">img</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Wiktor Pyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

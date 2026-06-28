@@ -1,0 +1,1297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API reference &mdash; niimblue.py 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            niimblue.py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#server-launcher">Server launcher</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.start_server"><code class="docutils literal notranslate"><span class="pre">start_server()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#main-client">Main client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.Printer"><code class="docutils literal notranslate"><span class="pre">Printer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.__enter__"><code class="docutils literal notranslate"><span class="pre">Printer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.__exit__"><code class="docutils literal notranslate"><span class="pre">Printer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.__init__"><code class="docutils literal notranslate"><span class="pre">Printer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.connect"><code class="docutils literal notranslate"><span class="pre">Printer.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.disconnect"><code class="docutils literal notranslate"><span class="pre">Printer.disconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.info"><code class="docutils literal notranslate"><span class="pre">Printer.info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.is_connected"><code class="docutils literal notranslate"><span class="pre">Printer.is_connected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.print"><code class="docutils literal notranslate"><span class="pre">Printer.print()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.rfid"><code class="docutils literal notranslate"><span class="pre">Printer.rfid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Printer.scan"><code class="docutils literal notranslate"><span class="pre">Printer.scan()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#print-job">Print job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.PrintJob"><code class="docutils literal notranslate"><span class="pre">PrintJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.__init__"><code class="docutils literal notranslate"><span class="pre">PrintJob.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.density"><code class="docutils literal notranslate"><span class="pre">PrintJob.density</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.image_fit"><code class="docutils literal notranslate"><span class="pre">PrintJob.image_fit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.image_position"><code class="docutils literal notranslate"><span class="pre">PrintJob.image_position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.image_source"><code class="docutils literal notranslate"><span class="pre">PrintJob.image_source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.label_height"><code class="docutils literal notranslate"><span class="pre">PrintJob.label_height</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.label_type"><code class="docutils literal notranslate"><span class="pre">PrintJob.label_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.label_width"><code class="docutils literal notranslate"><span class="pre">PrintJob.label_width</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.print_direction"><code class="docutils literal notranslate"><span class="pre">PrintJob.print_direction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.print_task"><code class="docutils literal notranslate"><span class="pre">PrintJob.print_task</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.quantity"><code class="docutils literal notranslate"><span class="pre">PrintJob.quantity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.threshold"><code class="docutils literal notranslate"><span class="pre">PrintJob.threshold</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintJob.to_payload"><code class="docutils literal notranslate"><span class="pre">PrintJob.to_payload()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#enumerations">Enumerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.Transport"><code class="docutils literal notranslate"><span class="pre">Transport</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Transport.BLE"><code class="docutils literal notranslate"><span class="pre">Transport.BLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Transport.SERIAL"><code class="docutils literal notranslate"><span class="pre">Transport.SERIAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">Transport.BLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">Transport.SERIAL</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.PrintDirection"><code class="docutils literal notranslate"><span class="pre">PrintDirection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintDirection.LEFT"><code class="docutils literal notranslate"><span class="pre">PrintDirection.LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrintDirection.TOP"><code class="docutils literal notranslate"><span class="pre">PrintDirection.TOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">PrintDirection.LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">PrintDirection.TOP</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.ImagePosition"><code class="docutils literal notranslate"><span class="pre">ImagePosition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.CENTRE"><code class="docutils literal notranslate"><span class="pre">ImagePosition.CENTRE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.TOP"><code class="docutils literal notranslate"><span class="pre">ImagePosition.TOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.RIGHT_TOP"><code class="docutils literal notranslate"><span class="pre">ImagePosition.RIGHT_TOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.RIGHT"><code class="docutils literal notranslate"><span class="pre">ImagePosition.RIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.RIGHT_BOTTOM"><code class="docutils literal notranslate"><span class="pre">ImagePosition.RIGHT_BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.BOTTOM"><code class="docutils literal notranslate"><span class="pre">ImagePosition.BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.LEFT_BOTTOM"><code class="docutils literal notranslate"><span class="pre">ImagePosition.LEFT_BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.LEFT"><code class="docutils literal notranslate"><span class="pre">ImagePosition.LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImagePosition.LEFT_TOP"><code class="docutils literal notranslate"><span class="pre">ImagePosition.LEFT_TOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">ImagePosition.BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">ImagePosition.CENTRE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">ImagePosition.LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">ImagePosition.LEFT_BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">ImagePosition.LEFT_TOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">ImagePosition.RIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">ImagePosition.RIGHT_BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">ImagePosition.RIGHT_TOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">ImagePosition.TOP</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.ImageFit"><code class="docutils literal notranslate"><span class="pre">ImageFit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImageFit.CONTAIN"><code class="docutils literal notranslate"><span class="pre">ImageFit.CONTAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImageFit.COVER"><code class="docutils literal notranslate"><span class="pre">ImageFit.COVER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImageFit.FILL"><code class="docutils literal notranslate"><span class="pre">ImageFit.FILL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImageFit.INSIDE"><code class="docutils literal notranslate"><span class="pre">ImageFit.INSIDE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.ImageFit.OUTSIDE"><code class="docutils literal notranslate"><span class="pre">ImageFit.OUTSIDE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13"><code class="docutils literal notranslate"><span class="pre">ImageFit.CONTAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14"><code class="docutils literal notranslate"><span class="pre">ImageFit.COVER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15"><code class="docutils literal notranslate"><span class="pre">ImageFit.FILL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16"><code class="docutils literal notranslate"><span class="pre">ImageFit.INSIDE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17"><code class="docutils literal notranslate"><span class="pre">ImageFit.OUTSIDE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-classes">Data classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.Device"><code class="docutils literal notranslate"><span class="pre">Device</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Device.name"><code class="docutils literal notranslate"><span class="pre">Device.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Device.address"><code class="docutils literal notranslate"><span class="pre">Device.address</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.Device.__init__"><code class="docutils literal notranslate"><span class="pre">Device.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18"><code class="docutils literal notranslate"><span class="pre">Device.address</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19"><code class="docutils literal notranslate"><span class="pre">Device.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.PrinterInfo"><code class="docutils literal notranslate"><span class="pre">PrinterInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.connect_result"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.connect_result</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.protocol_version"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.protocol_version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.model_id"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.model_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.serial"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.serial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.mac"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.mac</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.charge"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.auto_shutdown_time"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.auto_shutdown_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.label_type"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.label_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.hardware_version"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.hardware_version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.software_version"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.software_version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.model"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.dpi"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.dpi</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.print_direction"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.print_direction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.printhead_pixels"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.printhead_pixels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.paper_types"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.paper_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.density_min"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.density_min</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.density_max"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.density_max</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.density_default"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.density_default</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.detected_print_task"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.detected_print_task</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.__init__"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.auto_shutdown_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.connect_result</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.density_default</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.density_max</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.density_min</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.detected_print_task</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.dpi</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.PrinterInfo.from_response"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.from_response()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id28"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.hardware_version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.label_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.mac</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id32"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.model_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.paper_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.print_direction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.printhead_pixels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.protocol_version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.serial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id38"><code class="docutils literal notranslate"><span class="pre">PrinterInfo.software_version</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.RfidInfo"><code class="docutils literal notranslate"><span class="pre">RfidInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidInfo.paper"><code class="docutils literal notranslate"><span class="pre">RfidInfo.paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidInfo.ribbon"><code class="docutils literal notranslate"><span class="pre">RfidInfo.ribbon</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidInfo.__init__"><code class="docutils literal notranslate"><span class="pre">RfidInfo.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidInfo.from_response"><code class="docutils literal notranslate"><span class="pre">RfidInfo.from_response()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39"><code class="docutils literal notranslate"><span class="pre">RfidInfo.paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id40"><code class="docutils literal notranslate"><span class="pre">RfidInfo.ribbon</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.RfidTagInfo"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.tag_present"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.tag_present</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.uuid"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.uuid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.bar_code"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.bar_code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.serial_number"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.serial_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.all_paper"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.all_paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.used_paper"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.used_paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.consumables_type"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.consumables_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.__init__"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id41"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.all_paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id42"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.bar_code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id43"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.consumables_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.from_dict"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#niimblue.RfidTagInfo.remaining_paper"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.remaining_paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.serial_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id45"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.tag_present</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id46"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.used_paper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id47"><code class="docutils literal notranslate"><span class="pre">RfidTagInfo.uuid</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.PrinterError"><code class="docutils literal notranslate"><span class="pre">PrinterError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.PrinterConnectionError"><code class="docutils literal notranslate"><span class="pre">PrinterConnectionError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#niimblue.PrinterPrintError"><code class="docutils literal notranslate"><span class="pre">PrinterPrintError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">niimblue.py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="server-launcher">
+<h2>Server launcher<a class="headerlink" href="#server-launcher" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimblue.start_server">
+<span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">start_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">popen_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#start_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.start_server" title="Link to this definition"></a></dt>
+<dd><p>Launch a <code class="docutils literal notranslate"><span class="pre">niimblue-cli</span> <span class="pre">server</span></code> subprocess.</p>
+<p>The function starts the server in the background and returns the
+<a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">subprocess.Popen</span></code></a> object so the caller can manage its lifetime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>port</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – TCP port for the REST server to listen on (default <code class="docutils literal notranslate"><span class="pre">5000</span></code>).</p></li>
+<li><p><strong>host</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Host/interface to bind to (default <code class="docutils literal notranslate"><span class="pre">&quot;127.0.0.1&quot;</span></code>).</p></li>
+<li><p><strong>extra_args</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – Additional command-line arguments forwarded verbatim to
+<code class="docutils literal notranslate"><span class="pre">niimblue-cli</span> <span class="pre">server</span></code>.</p></li>
+<li><p><strong>wait</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – Seconds to sleep after spawning the process to give the server
+time to become ready (default <code class="docutils literal notranslate"><span class="pre">1.0</span></code>). Pass <code class="docutils literal notranslate"><span class="pre">0</span></code> to skip.</p></li>
+<li><p><strong>**popen_kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Keyword arguments forwarded to <a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">subprocess.Popen</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Popen</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The running server process.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#FileNotFoundError" title="(in Python v3.14)"><strong>FileNotFoundError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">niimblue-cli</span></code> is not found on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proc</span> <span class="o">=</span> <span class="n">start_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">Printer</span><span class="p">(</span><span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;label.png&quot;</span><span class="p">))</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+    <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="main-client">
+<h2>Main client<a class="headerlink" href="#main-client" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.Printer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">Printer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'http://localhost:5000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>High-level client for the niimblue-cli REST server.</p>
+<p>Wraps every REST endpoint in a typed Python method.  Can be used as a
+context manager — <a class="reference internal" href="#niimblue.Printer.__exit__" title="niimblue.Printer.__exit__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__exit__()</span></code></a> disconnects automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – URL of the running niimblue-cli server
+(default: <code class="docutils literal notranslate"><span class="pre">&quot;http://localhost:5000&quot;</span></code>).</p></li>
+<li><p><strong>timeout</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – Seconds to wait for each HTTP response (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Printer</span><span class="p">(</span><span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">BLE</span><span class="p">,</span> <span class="s2">&quot;AA:BB:CC:DD:EE:FF&quot;</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;label.png&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.__enter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.__enter__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.Printer" title="niimblue.client.Printer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Printer</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.__exit__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.__exit__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'http://localhost:5000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.connect" title="Link to this definition"></a></dt>
+<dd><p>Connect to a printer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transport</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#niimblue.Transport" title="niimblue.client.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <a class="reference internal" href="#niimblue.Transport" title="niimblue.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a> enum value, or the raw strings
+<code class="docutils literal notranslate"><span class="pre">&quot;ble&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;serial&quot;</span></code>.</p></li>
+<li><p><strong>address</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – BLE MAC address (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;AA:BB:CC:DD:EE:FF&quot;</span></code>) or serial
+port (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;COM8&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;/dev/ttyUSB0&quot;</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Server confirmation message.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#niimblue.PrinterConnectionError" title="niimblue.PrinterConnectionError"><strong>PrinterConnectionError</strong></a> – If the server returns a non-2xx status.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.disconnect" title="Link to this definition"></a></dt>
+<dd><p>Disconnect from the currently connected printer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Server confirmation message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.info" title="Link to this definition"></a></dt>
+<dd><p>Fetch and return structured printer information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.PrinterInfo" title="niimblue.client.PrinterInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrinterInfo</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A populated <a class="reference internal" href="#niimblue.PrinterInfo" title="niimblue.PrinterInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrinterInfo</span></code></a> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.is_connected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.is_connected" title="Link to this definition"></a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the server currently has an active printer connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.print" title="Link to this definition"></a></dt>
+<dd><p>Send a print job to the connected printer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>job</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.PrintJob" title="niimblue.client.PrintJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrintJob</span></code></a></span>) – A fully configured <a class="reference internal" href="#niimblue.PrintJob" title="niimblue.PrintJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrintJob</span></code></a> instance.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Server confirmation message.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#niimblue.PrinterPrintError" title="niimblue.PrinterPrintError"><strong>PrinterPrintError</strong></a> – If the server rejects the job.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the job is missing an image source.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.14)"><strong>TypeError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">image_source</span></code> is of an unsupported type.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.14)"><strong>ImportError</strong></a> – If a <code class="docutils literal notranslate"><span class="pre">PIL.Image.Image</span></code> is supplied but Pillow is
+    not installed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.rfid">
+<span class="sig-name descname"><span class="pre">rfid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.rfid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.rfid" title="Link to this definition"></a></dt>
+<dd><p>Fetch and return RFID tag information for the loaded consumables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.RfidInfo" title="niimblue.client.RfidInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">RfidInfo</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A populated <a class="reference internal" href="#niimblue.RfidInfo" title="niimblue.RfidInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">RfidInfo</span></code></a> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Printer.scan">
+<span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Printer.scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Printer.scan" title="Link to this definition"></a></dt>
+<dd><p>Scan for nearby devices over the given transport.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>transport</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#niimblue.Transport" title="niimblue.client.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <a class="reference internal" href="#niimblue.Transport" title="niimblue.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a> enum value, or <code class="docutils literal notranslate"><span class="pre">&quot;ble&quot;</span></code> /
+<code class="docutils literal notranslate"><span class="pre">&quot;serial&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="#niimblue.Device" title="niimblue.client.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of discovered <a class="reference internal" href="#niimblue.Device" title="niimblue.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> objects (may be empty).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="print-job">
+<h2>Print job<a class="headerlink" href="#print-job" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.PrintJob">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">PrintJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PrintDirection.LEFT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ImagePosition.CENTRE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_fit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ImageFit.CONTAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#PrintJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrintJob" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Parameters for a single print job.</p>
+<p>The <a class="reference internal" href="#niimblue.PrintJob.image_source" title="niimblue.PrintJob.image_source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">image_source</span></code></a> field is flexible and accepts several types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code> — local file path <em>or</em> remote URL.
+If the path exists on disk it is read as a file; otherwise the string
+is sent to the server as a URL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pathlib.Path</span></code> — local image file (PNG, JPEG, BMP, …).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code> — raw image bytes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PIL.Image.Image</span></code> — an already-opened Pillow image object
+(requires the <code class="docutils literal notranslate"><span class="pre">pillow</span></code> extra).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_source</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Image to print. See above for accepted types.</p></li>
+<li><p><strong>print_direction</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.PrintDirection" title="niimblue.client.PrintDirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrintDirection</span></code></a></span>) – Feed direction / orientation of the label.</p></li>
+<li><p><strong>label_width</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – Label width in pixels. Auto-detected when <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>label_height</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – Label height in pixels. Auto-detected when <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>image_position</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.ImagePosition" title="niimblue.client.ImagePosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePosition</span></code></a></span>) – Anchor point of the image within the label.</p></li>
+<li><p><strong>image_fit</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.ImageFit" title="niimblue.client.ImageFit"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageFit</span></code></a></span>) – Resizing strategy.</p></li>
+<li><p><strong>quantity</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Number of copies to print.</p></li>
+<li><p><strong>density</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Print density (darkness). Typical range 1–5.</p></li>
+<li><p><strong>threshold</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Binarisation threshold for dithering (0–255, default 128).</p></li>
+<li><p><strong>print_task</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Hardware print-task code (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;B1&quot;</span></code>).
+Auto-detected by the server when <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>label_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Label type identifier sent to the firmware.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.PrintJob.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PrintDirection.LEFT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ImagePosition.CENTRE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_fit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ImageFit.CONTAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#niimblue.PrintJob.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.density">
+<span class="sig-name descname"><span class="pre">density</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#niimblue.PrintJob.density" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.image_fit">
+<span class="sig-name descname"><span class="pre">image_fit</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#niimblue.ImageFit" title="niimblue.client.ImageFit"><span class="pre">ImageFit</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'contain'</span></span><a class="headerlink" href="#niimblue.PrintJob.image_fit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.image_position">
+<span class="sig-name descname"><span class="pre">image_position</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#niimblue.ImagePosition" title="niimblue.client.ImagePosition"><span class="pre">ImagePosition</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'centre'</span></span><a class="headerlink" href="#niimblue.PrintJob.image_position" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.image_source">
+<span class="sig-name descname"><span class="pre">image_source</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#niimblue.PrintJob.image_source" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.label_height">
+<span class="sig-name descname"><span class="pre">label_height</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#niimblue.PrintJob.label_height" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.label_type">
+<span class="sig-name descname"><span class="pre">label_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#niimblue.PrintJob.label_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.label_width">
+<span class="sig-name descname"><span class="pre">label_width</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#niimblue.PrintJob.label_width" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.print_direction">
+<span class="sig-name descname"><span class="pre">print_direction</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#niimblue.PrintDirection" title="niimblue.client.PrintDirection"><span class="pre">PrintDirection</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'left'</span></span><a class="headerlink" href="#niimblue.PrintJob.print_direction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.print_task">
+<span class="sig-name descname"><span class="pre">print_task</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#niimblue.PrintJob.print_task" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.quantity">
+<span class="sig-name descname"><span class="pre">quantity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#niimblue.PrintJob.quantity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintJob.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></span><a class="headerlink" href="#niimblue.PrintJob.threshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.PrintJob.to_payload">
+<span class="sig-name descname"><span class="pre">to_payload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#PrintJob.to_payload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrintJob.to_payload" title="Link to this definition"></a></dt>
+<dd><p>Serialise the job to the JSON payload expected by the REST server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary ready to be JSON-encoded and POSTed to <code class="docutils literal notranslate"><span class="pre">/print</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.Transport">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">Transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Transport" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Communication transport to use when connecting to the printer.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.Transport.BLE">
+<span class="sig-name descname"><span class="pre">BLE</span></span><a class="headerlink" href="#niimblue.Transport.BLE" title="Link to this definition"></a></dt>
+<dd><p>Bluetooth Low Energy.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.Transport.SERIAL">
+<span class="sig-name descname"><span class="pre">SERIAL</span></span><a class="headerlink" href="#niimblue.Transport.SERIAL" title="Link to this definition"></a></dt>
+<dd><p>USB serial / UART.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">BLE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ble'</span></span><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">SERIAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'serial'</span></span><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.PrintDirection">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">PrintDirection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#PrintDirection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrintDirection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Orientation of the printed image on the label.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintDirection.LEFT">
+<span class="sig-name descname"><span class="pre">LEFT</span></span><a class="headerlink" href="#niimblue.PrintDirection.LEFT" title="Link to this definition"></a></dt>
+<dd><p>Feed direction is from the left (landscape).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrintDirection.TOP">
+<span class="sig-name descname"><span class="pre">TOP</span></span><a class="headerlink" href="#niimblue.PrintDirection.TOP" title="Link to this definition"></a></dt>
+<dd><p>Feed direction is from the top (portrait).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">LEFT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'left'</span></span><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">TOP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'top'</span></span><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.ImagePosition">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">ImagePosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#ImagePosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.ImagePosition" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Anchor point for positioning the image within the label canvas.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.CENTRE">
+<span class="sig-name descname"><span class="pre">CENTRE</span></span><a class="headerlink" href="#niimblue.ImagePosition.CENTRE" title="Link to this definition"></a></dt>
+<dd><p>Centered (default).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.TOP">
+<span class="sig-name descname"><span class="pre">TOP</span></span><a class="headerlink" href="#niimblue.ImagePosition.TOP" title="Link to this definition"></a></dt>
+<dd><p>Top-center.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.RIGHT_TOP">
+<span class="sig-name descname"><span class="pre">RIGHT_TOP</span></span><a class="headerlink" href="#niimblue.ImagePosition.RIGHT_TOP" title="Link to this definition"></a></dt>
+<dd><p>Top-right corner.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.RIGHT">
+<span class="sig-name descname"><span class="pre">RIGHT</span></span><a class="headerlink" href="#niimblue.ImagePosition.RIGHT" title="Link to this definition"></a></dt>
+<dd><p>Middle-right.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.RIGHT_BOTTOM">
+<span class="sig-name descname"><span class="pre">RIGHT_BOTTOM</span></span><a class="headerlink" href="#niimblue.ImagePosition.RIGHT_BOTTOM" title="Link to this definition"></a></dt>
+<dd><p>Bottom-right corner.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.BOTTOM">
+<span class="sig-name descname"><span class="pre">BOTTOM</span></span><a class="headerlink" href="#niimblue.ImagePosition.BOTTOM" title="Link to this definition"></a></dt>
+<dd><p>Bottom-center.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.LEFT_BOTTOM">
+<span class="sig-name descname"><span class="pre">LEFT_BOTTOM</span></span><a class="headerlink" href="#niimblue.ImagePosition.LEFT_BOTTOM" title="Link to this definition"></a></dt>
+<dd><p>Bottom-left corner.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.LEFT">
+<span class="sig-name descname"><span class="pre">LEFT</span></span><a class="headerlink" href="#niimblue.ImagePosition.LEFT" title="Link to this definition"></a></dt>
+<dd><p>Middle-left.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImagePosition.LEFT_TOP">
+<span class="sig-name descname"><span class="pre">LEFT_TOP</span></span><a class="headerlink" href="#niimblue.ImagePosition.LEFT_TOP" title="Link to this definition"></a></dt>
+<dd><p>Top-left corner.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">BOTTOM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bottom'</span></span><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">CENTRE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'centre'</span></span><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">LEFT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'left'</span></span><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">LEFT_BOTTOM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'left</span> <span class="pre">bottom'</span></span><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">LEFT_TOP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'left</span> <span class="pre">top'</span></span><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">RIGHT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'right'</span></span><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">RIGHT_BOTTOM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'right</span> <span class="pre">bottom'</span></span><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">RIGHT_TOP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'right</span> <span class="pre">top'</span></span><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">TOP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'top'</span></span><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.ImageFit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">ImageFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#ImageFit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.ImageFit" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Strategy used to fit the image into the label dimensions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImageFit.CONTAIN">
+<span class="sig-name descname"><span class="pre">CONTAIN</span></span><a class="headerlink" href="#niimblue.ImageFit.CONTAIN" title="Link to this definition"></a></dt>
+<dd><p>Scale to fit, preserving aspect ratio (default).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImageFit.COVER">
+<span class="sig-name descname"><span class="pre">COVER</span></span><a class="headerlink" href="#niimblue.ImageFit.COVER" title="Link to this definition"></a></dt>
+<dd><p>Scale to fill, cropping if necessary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImageFit.FILL">
+<span class="sig-name descname"><span class="pre">FILL</span></span><a class="headerlink" href="#niimblue.ImageFit.FILL" title="Link to this definition"></a></dt>
+<dd><p>Stretch to exactly fill (ignores aspect ratio).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImageFit.INSIDE">
+<span class="sig-name descname"><span class="pre">INSIDE</span></span><a class="headerlink" href="#niimblue.ImageFit.INSIDE" title="Link to this definition"></a></dt>
+<dd><p>Like CONTAIN but never upscales.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.ImageFit.OUTSIDE">
+<span class="sig-name descname"><span class="pre">OUTSIDE</span></span><a class="headerlink" href="#niimblue.ImageFit.OUTSIDE" title="Link to this definition"></a></dt>
+<dd><p>Like COVER but never downscales.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">CONTAIN</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'contain'</span></span><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">COVER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cover'</span></span><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">FILL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fill'</span></span><a class="headerlink" href="#id15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">INSIDE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'inside'</span></span><a class="headerlink" href="#id16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">OUTSIDE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'outside'</span></span><a class="headerlink" href="#id17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="data-classes">
+<h2>Data classes<a class="headerlink" href="#data-classes" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.Device">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.Device" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A printer device discovered during a scan.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.Device.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#niimblue.Device.name" title="Link to this definition"></a></dt>
+<dd><p>Human-readable device name.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.Device.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#niimblue.Device.address" title="Link to this definition"></a></dt>
+<dd><p>BLE MAC address or serial port path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.Device.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#niimblue.Device.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">address</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id18" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id19" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">PrinterInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connect_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_shutdown_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hardware_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">software_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printhead_pixels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paper_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_print_task</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#PrinterInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrinterInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Structured printer information returned by <a class="reference internal" href="#niimblue.Printer.info" title="niimblue.Printer.info"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Printer.info()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.connect_result">
+<span class="sig-name descname"><span class="pre">connect_result</span></span><a class="headerlink" href="#niimblue.PrinterInfo.connect_result" title="Link to this definition"></a></dt>
+<dd><p>Raw connection-result code from firmware.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.protocol_version">
+<span class="sig-name descname"><span class="pre">protocol_version</span></span><a class="headerlink" href="#niimblue.PrinterInfo.protocol_version" title="Link to this definition"></a></dt>
+<dd><p>Firmware protocol version number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.model_id">
+<span class="sig-name descname"><span class="pre">model_id</span></span><a class="headerlink" href="#niimblue.PrinterInfo.model_id" title="Link to this definition"></a></dt>
+<dd><p>Numeric model identifier.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.serial">
+<span class="sig-name descname"><span class="pre">serial</span></span><a class="headerlink" href="#niimblue.PrinterInfo.serial" title="Link to this definition"></a></dt>
+<dd><p>Device serial number string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.mac">
+<span class="sig-name descname"><span class="pre">mac</span></span><a class="headerlink" href="#niimblue.PrinterInfo.mac" title="Link to this definition"></a></dt>
+<dd><p>Bluetooth MAC address.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><a class="headerlink" href="#niimblue.PrinterInfo.charge" title="Link to this definition"></a></dt>
+<dd><p>Battery charge percentage (0–100).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.auto_shutdown_time">
+<span class="sig-name descname"><span class="pre">auto_shutdown_time</span></span><a class="headerlink" href="#niimblue.PrinterInfo.auto_shutdown_time" title="Link to this definition"></a></dt>
+<dd><p>Idle-shutdown timeout in seconds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.label_type">
+<span class="sig-name descname"><span class="pre">label_type</span></span><a class="headerlink" href="#niimblue.PrinterInfo.label_type" title="Link to this definition"></a></dt>
+<dd><p>Currently loaded label type code.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.hardware_version">
+<span class="sig-name descname"><span class="pre">hardware_version</span></span><a class="headerlink" href="#niimblue.PrinterInfo.hardware_version" title="Link to this definition"></a></dt>
+<dd><p>Hardware revision string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.software_version">
+<span class="sig-name descname"><span class="pre">software_version</span></span><a class="headerlink" href="#niimblue.PrinterInfo.software_version" title="Link to this definition"></a></dt>
+<dd><p>Firmware version string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#niimblue.PrinterInfo.model" title="Link to this definition"></a></dt>
+<dd><p>Human-readable model name (from server metadata).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.dpi">
+<span class="sig-name descname"><span class="pre">dpi</span></span><a class="headerlink" href="#niimblue.PrinterInfo.dpi" title="Link to this definition"></a></dt>
+<dd><p>Print resolution in dots per inch.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.print_direction">
+<span class="sig-name descname"><span class="pre">print_direction</span></span><a class="headerlink" href="#niimblue.PrinterInfo.print_direction" title="Link to this definition"></a></dt>
+<dd><p>Default print direction for this model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.printhead_pixels">
+<span class="sig-name descname"><span class="pre">printhead_pixels</span></span><a class="headerlink" href="#niimblue.PrinterInfo.printhead_pixels" title="Link to this definition"></a></dt>
+<dd><p>Number of pixels across the printhead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.paper_types">
+<span class="sig-name descname"><span class="pre">paper_types</span></span><a class="headerlink" href="#niimblue.PrinterInfo.paper_types" title="Link to this definition"></a></dt>
+<dd><p>List of supported paper/label type codes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.density_min">
+<span class="sig-name descname"><span class="pre">density_min</span></span><a class="headerlink" href="#niimblue.PrinterInfo.density_min" title="Link to this definition"></a></dt>
+<dd><p>Minimum valid density value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.density_max">
+<span class="sig-name descname"><span class="pre">density_max</span></span><a class="headerlink" href="#niimblue.PrinterInfo.density_max" title="Link to this definition"></a></dt>
+<dd><p>Maximum valid density value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.density_default">
+<span class="sig-name descname"><span class="pre">density_default</span></span><a class="headerlink" href="#niimblue.PrinterInfo.density_default" title="Link to this definition"></a></dt>
+<dd><p>Factory-default density value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.detected_print_task">
+<span class="sig-name descname"><span class="pre">detected_print_task</span></span><a class="headerlink" href="#niimblue.PrinterInfo.detected_print_task" title="Link to this definition"></a></dt>
+<dd><p>Print-task code auto-detected by the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connect_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_shutdown_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hardware_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">software_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printhead_pixels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paper_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_print_task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#niimblue.PrinterInfo.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">auto_shutdown_time</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id20" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">charge</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id21" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">connect_result</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id22" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">density_default</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id23" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">density_max</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id24" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">density_min</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id25" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">detected_print_task</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id26" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">dpi</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id27" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.PrinterInfo.from_response">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#PrinterInfo.from_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrinterInfo.from_response" title="Link to this definition"></a></dt>
+<dd><p>Construct a <a class="reference internal" href="#niimblue.PrinterInfo" title="niimblue.PrinterInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrinterInfo</span></code></a> from the raw <code class="docutils literal notranslate"><span class="pre">/info</span></code> response dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.PrinterInfo" title="niimblue.client.PrinterInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrinterInfo</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id28">
+<span class="sig-name descname"><span class="pre">hardware_version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id28" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">label_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id29" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">mac</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id30" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">model</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id31" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id32">
+<span class="sig-name descname"><span class="pre">model_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id32" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id33">
+<span class="sig-name descname"><span class="pre">paper_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id33" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-name descname"><span class="pre">print_direction</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id34" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id35">
+<span class="sig-name descname"><span class="pre">printhead_pixels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id35" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id36">
+<span class="sig-name descname"><span class="pre">protocol_version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id36" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id37">
+<span class="sig-name descname"><span class="pre">serial</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id37" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id38">
+<span class="sig-name descname"><span class="pre">software_version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id38" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.RfidInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">RfidInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ribbon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#RfidInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.RfidInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Combined RFID information for all loaded consumables.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidInfo.paper">
+<span class="sig-name descname"><span class="pre">paper</span></span><a class="headerlink" href="#niimblue.RfidInfo.paper" title="Link to this definition"></a></dt>
+<dd><p>RFID data for the paper/label roll.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidInfo.ribbon">
+<span class="sig-name descname"><span class="pre">ribbon</span></span><a class="headerlink" href="#niimblue.RfidInfo.ribbon" title="Link to this definition"></a></dt>
+<dd><p>RFID data for the ink ribbon, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for label-only
+printers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.RfidInfo.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ribbon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#niimblue.RfidInfo.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.RfidInfo.from_response">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#RfidInfo.from_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.RfidInfo.from_response" title="Link to this definition"></a></dt>
+<dd><p>Construct from the raw <code class="docutils literal notranslate"><span class="pre">/rfid</span></code> response dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.RfidInfo" title="niimblue.client.RfidInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">RfidInfo</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id39">
+<span class="sig-name descname"><span class="pre">paper</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#niimblue.RfidTagInfo" title="niimblue.client.RfidTagInfo"><span class="pre">RfidTagInfo</span></a></span><a class="headerlink" href="#id39" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id40">
+<span class="sig-name descname"><span class="pre">ribbon</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#niimblue.RfidTagInfo" title="niimblue.client.RfidTagInfo"><span class="pre">RfidTagInfo</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id40" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">RfidTagInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_present</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serial_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">used_paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumables_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#RfidTagInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.RfidTagInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>RFID tag data for one consumable (paper roll or ribbon).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.tag_present">
+<span class="sig-name descname"><span class="pre">tag_present</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.tag_present" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if a tag was detected.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.uuid">
+<span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.uuid" title="Link to this definition"></a></dt>
+<dd><p>Tag UUID string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.bar_code">
+<span class="sig-name descname"><span class="pre">bar_code</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.bar_code" title="Link to this definition"></a></dt>
+<dd><p>Barcode value encoded in the tag.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.serial_number">
+<span class="sig-name descname"><span class="pre">serial_number</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.serial_number" title="Link to this definition"></a></dt>
+<dd><p>Consumable serial number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.all_paper">
+<span class="sig-name descname"><span class="pre">all_paper</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.all_paper" title="Link to this definition"></a></dt>
+<dd><p>Total label capacity of the roll.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.used_paper">
+<span class="sig-name descname"><span class="pre">used_paper</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.used_paper" title="Link to this definition"></a></dt>
+<dd><p>Number of labels already consumed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.consumables_type">
+<span class="sig-name descname"><span class="pre">consumables_type</span></span><a class="headerlink" href="#niimblue.RfidTagInfo.consumables_type" title="Link to this definition"></a></dt>
+<dd><p>Numeric consumable-type identifier.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_present</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serial_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">used_paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumables_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#niimblue.RfidTagInfo.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id41">
+<span class="sig-name descname"><span class="pre">all_paper</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id41" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id42">
+<span class="sig-name descname"><span class="pre">bar_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id42" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id43">
+<span class="sig-name descname"><span class="pre">consumables_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id43" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.from_dict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/niimblue/client.html#RfidTagInfo.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.RfidTagInfo.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Construct from the nested dict returned by <code class="docutils literal notranslate"><span class="pre">/rfid</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#niimblue.RfidTagInfo" title="niimblue.client.RfidTagInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">RfidTagInfo</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="niimblue.RfidTagInfo.remaining_paper">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">remaining_paper</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#niimblue.RfidTagInfo.remaining_paper" title="Link to this definition"></a></dt>
+<dd><p>Remaining label count (<code class="docutils literal notranslate"><span class="pre">all_paper</span> <span class="pre">-</span> <span class="pre">used_paper</span></code>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id44">
+<span class="sig-name descname"><span class="pre">serial_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id44" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id45">
+<span class="sig-name descname"><span class="pre">tag_present</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="headerlink" href="#id45" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id46">
+<span class="sig-name descname"><span class="pre">used_paper</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#id46" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id47">
+<span class="sig-name descname"><span class="pre">uuid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#id47" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="niimblue.PrinterError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">PrinterError</span></span><a class="reference internal" href="_modules/niimblue/client.html#PrinterError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrinterError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Base exception for all printer-client errors.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="niimblue.PrinterConnectionError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">PrinterConnectionError</span></span><a class="reference internal" href="_modules/niimblue/client.html#PrinterConnectionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrinterConnectionError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#niimblue.PrinterError" title="niimblue.client.PrinterError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrinterError</span></code></a></p>
+<p>Raised when the printer cannot be reached or a connection attempt fails.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="niimblue.PrinterPrintError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">niimblue.</span></span><span class="sig-name descname"><span class="pre">PrinterPrintError</span></span><a class="reference internal" href="_modules/niimblue/client.html#PrinterPrintError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimblue.PrinterPrintError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#niimblue.PrinterError" title="niimblue.client.PrinterError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrinterError</span></code></a></p>
+<p>Raised when a print job is rejected or fails mid-print.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Wiktor Pyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

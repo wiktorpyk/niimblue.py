@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples &mdash; niimblue.py 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API reference" href="api.html" />
+    <link rel="prev" title="Quick start" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            niimblue.py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#starting-and-stopping-the-server">Starting and stopping the server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connecting-to-a-printer">Connecting to a printer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#serial-usb">Serial (USB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bluetooth-le">Bluetooth LE</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#printing-images">Printing images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-a-file-path-string-or-path">From a file path (string or Path)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-a-remote-url">From a remote URL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-raw-bytes">From raw bytes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-a-pillow-image-optional-dependency">From a Pillow image (optional dependency)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#layout-and-quality-options">Layout and quality options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#checking-printer-status">Checking printer status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#checking-consumables-via-rfid">Checking consumables via RFID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#batch-printing">Batch printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-server-url-and-timeout">Custom server URL and timeout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">niimblue.py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<p>All examples assume the niimblue-cli server is already running.
+Use <a class="reference internal" href="api.html#niimblue.start_server" title="niimblue.start_server"><code class="xref py py-func docutils literal notranslate"><span class="pre">start_server()</span></code></a> to launch it from Python, or start it
+manually with <code class="docutils literal notranslate"><span class="pre">niimblue-cli</span> <span class="pre">server</span> <span class="pre">--port</span> <span class="pre">5000</span></code>.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#starting-and-stopping-the-server" id="id1">Starting and stopping the server</a></p></li>
+<li><p><a class="reference internal" href="#connecting-to-a-printer" id="id2">Connecting to a printer</a></p></li>
+<li><p><a class="reference internal" href="#printing-images" id="id3">Printing images</a></p></li>
+<li><p><a class="reference internal" href="#layout-and-quality-options" id="id4">Layout and quality options</a></p></li>
+<li><p><a class="reference internal" href="#checking-printer-status" id="id5">Checking printer status</a></p></li>
+<li><p><a class="reference internal" href="#checking-consumables-via-rfid" id="id6">Checking consumables via RFID</a></p></li>
+<li><p><a class="reference internal" href="#batch-printing" id="id7">Batch printing</a></p></li>
+<li><p><a class="reference internal" href="#error-handling" id="id8">Error handling</a></p></li>
+<li><p><a class="reference internal" href="#custom-server-url-and-timeout" id="id9">Custom server URL and timeout</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="starting-and-stopping-the-server">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Starting and stopping the server</a><a class="headerlink" href="#starting-and-stopping-the-server" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">start_server</span>
+
+<span class="c1"># Launch niimblue-cli server in the background.</span>
+<span class="c1"># wait=1.5 sleeps 1.5 s to let the server bind before you connect.</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">start_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="c1"># ... do your work ...</span>
+
+<span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+<span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Use it as a context manager with <code class="docutils literal notranslate"><span class="pre">contextlib.closing</span></code> for automatic cleanup:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">start_server</span><span class="p">,</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="n">proc</span> <span class="o">=</span> <span class="n">start_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">proc</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+        <span class="c1"># ...</span>
+    <span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>   <span class="c1"># closing() calls proc.close(), not terminate()</span>
+</pre></div>
+</div>
+<p>Or wrap everything in a helper:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">start_server</span><span class="p">,</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">managed_printer</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="o">**</span><span class="n">connect_kwargs</span><span class="p">):</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">start_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Printer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">connect_kwargs</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">p</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">managed_printer</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;COM8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="connecting-to-a-printer">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Connecting to a printer</a><a class="headerlink" href="#connecting-to-a-printer" title="Link to this heading"></a></h2>
+<section id="serial-usb">
+<h3>Serial (USB)<a class="headerlink" href="#serial-usb" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="c1"># Windows</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Linux / macOS</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Battery:&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="bluetooth-le">
+<h3>Bluetooth LE<a class="headerlink" href="#bluetooth-le" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="c1"># Scan first to find the address</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">BLE</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+
+    <span class="c1"># Then connect by MAC</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">BLE</span><span class="p">,</span> <span class="s2">&quot;AA:BB:CC:DD:EE:FF&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="printing-images">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Printing images</a><a class="headerlink" href="#printing-images" title="Link to this heading"></a></h2>
+<section id="from-a-file-path-string-or-path">
+<h3>From a file path (string or Path)<a class="headerlink" href="#from-a-file-path-string-or-path" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+
+    <span class="c1"># str path</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;label.png&quot;</span><span class="p">))</span>
+
+    <span class="c1"># pathlib.Path</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;assets/label.png&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="from-a-remote-url">
+<h3>From a remote URL<a class="headerlink" href="#from-a-remote-url" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span><span class="p">,</span> <span class="n">PrintDirection</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span>
+        <span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;https://example.com/barcode.png&quot;</span><span class="p">,</span>
+        <span class="n">label_width</span><span class="o">=</span><span class="mi">344</span><span class="p">,</span>
+        <span class="n">label_height</span><span class="o">=</span><span class="mi">96</span><span class="p">,</span>
+        <span class="n">print_direction</span><span class="o">=</span><span class="n">PrintDirection</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span>
+        <span class="n">quantity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">density</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="from-raw-bytes">
+<h3>From raw bytes<a class="headerlink" href="#from-raw-bytes" title="Link to this heading"></a></h3>
+<p>Useful when the image comes from a network response or an in-memory buffer:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">req</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="n">image_bytes</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://example.com/label.png&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">image_bytes</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="from-a-pillow-image-optional-dependency">
+<h3>From a Pillow image (optional dependency)<a class="headerlink" href="#from-a-pillow-image-optional-dependency" title="Link to this heading"></a></h3>
+<p>Requires <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;niimblue[pillow]&quot;</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="c1"># Build the label in memory</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">344</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+<span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="s2">&quot;Product Name&quot;</span><span class="p">,</span>  <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="s2">&quot;SKU: 00123456&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">343</span><span class="p">,</span> <span class="mi">95</span><span class="p">)],</span> <span class="n">outline</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="layout-and-quality-options">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Layout and quality options</a><a class="headerlink" href="#layout-and-quality-options" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">PrintDirection</span><span class="p">,</span> <span class="n">ImagePosition</span><span class="p">,</span> <span class="n">ImageFit</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">PrintJob</span><span class="p">(</span>
+    <span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;label.png&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Orientation</span>
+    <span class="n">print_direction</span><span class="o">=</span><span class="n">PrintDirection</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span>   <span class="c1"># portrait feed</span>
+
+    <span class="c1"># Canvas size in pixels (auto-detected when omitted)</span>
+    <span class="n">label_width</span><span class="o">=</span><span class="mi">344</span><span class="p">,</span>
+    <span class="n">label_height</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+
+    <span class="c1"># How to place the image inside the canvas</span>
+    <span class="n">image_position</span><span class="o">=</span><span class="n">ImagePosition</span><span class="o">.</span><span class="n">CENTRE</span><span class="p">,</span>
+    <span class="n">image_fit</span><span class="o">=</span><span class="n">ImageFit</span><span class="o">.</span><span class="n">CONTAIN</span><span class="p">,</span>           <span class="c1"># letterbox, preserve aspect ratio</span>
+
+    <span class="c1"># Quality</span>
+    <span class="n">quantity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>       <span class="c1"># print 2 copies</span>
+    <span class="n">density</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>        <span class="c1"># darker (range 1–5, default 3)</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span>    <span class="c1"># binarisation threshold (0–255, default 128)</span>
+
+    <span class="c1"># Hardware hint — auto-detected by the server when omitted</span>
+    <span class="n">print_task</span><span class="o">=</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+    <span class="n">label_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="checking-printer-status">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Checking printer status</a><a class="headerlink" href="#checking-printer-status" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">BLE</span><span class="p">,</span> <span class="s2">&quot;AA:BB:CC:DD:EE:FF&quot;</span><span class="p">)</span>
+
+    <span class="n">info</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model:    </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Firmware: </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">software_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Battery:  </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">charge</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DPI:      </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">dpi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Density range: </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">density_min</span><span class="si">}</span><span class="s2">–</span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">density_max</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;(default </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">density_default</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detected task: </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">detected_print_task</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="checking-consumables-via-rfid">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Checking consumables via RFID</a><a class="headerlink" href="#checking-consumables-via-rfid" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">)</span>
+
+    <span class="n">rfid</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">rfid</span><span class="p">()</span>
+
+    <span class="n">paper</span> <span class="o">=</span> <span class="n">rfid</span><span class="o">.</span><span class="n">paper</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Paper tag present: </span><span class="si">{</span><span class="n">paper</span><span class="o">.</span><span class="n">tag_present</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Labels remaining:  </span><span class="si">{</span><span class="n">paper</span><span class="o">.</span><span class="n">remaining_paper</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">paper</span><span class="o">.</span><span class="n">all_paper</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Barcode: </span><span class="si">{</span><span class="n">paper</span><span class="o">.</span><span class="n">bar_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">rfid</span><span class="o">.</span><span class="n">ribbon</span><span class="p">:</span>
+        <span class="n">ribbon</span> <span class="o">=</span> <span class="n">rfid</span><span class="o">.</span><span class="n">ribbon</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ribbon remaining: </span><span class="si">{</span><span class="n">ribbon</span><span class="o">.</span><span class="n">remaining_paper</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">ribbon</span><span class="o">.</span><span class="n">all_paper</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Warn when running low</span>
+    <span class="k">if</span> <span class="n">paper</span><span class="o">.</span><span class="n">remaining_paper</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;⚠ Paper roll almost empty — please replace soon.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="batch-printing">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Batch printing</a><a class="headerlink" href="#batch-printing" title="Link to this heading"></a></h2>
+<p>Print a list of labels generated on the fly, reusing one connection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="n">ITEMS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span>  <span class="s2">&quot;SKU-001&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Banana&quot;</span><span class="p">,</span> <span class="s2">&quot;SKU-002&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Cherry&quot;</span><span class="p">,</span> <span class="s2">&quot;SKU-003&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_label</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">344</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">name</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">sku</span><span class="p">,</span>  <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">ITEMS</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">make_label</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sku</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="n">label</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Printed </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="error-handling">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Error handling</a><a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span><span class="p">,</span>
+    <span class="n">PrinterConnectionError</span><span class="p">,</span> <span class="n">PrinterPrintError</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Printer</span><span class="p">(</span><span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">SERIAL</span><span class="p">,</span> <span class="s2">&quot;COM8&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">PrinterConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not connect: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;label.png&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">PrinterPrintError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Print failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># image_source was None or path didn&#39;t resolve</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bad job configuration: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># PIL.Image passed but Pillow not installed</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing dependency: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="custom-server-url-and-timeout">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Custom server URL and timeout</a><a class="headerlink" href="#custom-server-url-and-timeout" title="Link to this heading"></a></h2>
+<p>Useful when the server runs on a remote machine or on a non-default port:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimblue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Printer</span><span class="p">,</span> <span class="n">PrintJob</span><span class="p">,</span> <span class="n">Transport</span>
+
+<span class="c1"># Remote server, longer timeout for slow networks</span>
+<span class="k">with</span> <span class="n">Printer</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://192.168.1.42:8080&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">30.0</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Transport</span><span class="o">.</span><span class="n">BLE</span><span class="p">,</span> <span class="s2">&quot;AA:BB:CC:DD:EE:FF&quot;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">PrintJob</span><span class="p">(</span><span class="n">image_source</span><span class="o">=</span><span class="s2">&quot;label.png&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Wiktor Pyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
